@@ -1,0 +1,47 @@
+<?php
+// Get from database susu_mou
+class SusuModel
+{
+    // Declare private variable
+    public function connection(){
+        return new mysqli('localhost', 'root', '', 'sapi_mou', 3306);
+    }
+    public function getAll()
+    {
+        $query = "SELECT * FROM pencatatan_data_susu";
+        $data_susu = mysqli_query($this->connection(), $query);
+        // fetch_assoc() = mengambil data dari database
+        $result = [];
+        while ($row = mysqli_fetch_assoc($data_susu)) {
+            $result[] = $row;
+        }
+        return $result;
+    }
+    public function findSusu($id)
+    {
+        $query = "SELECT * FROM pencatatan_data_susu WHERE id_susu = $id";
+        $data_susu = mysqli_query($this->connection(), $query);
+        // fetch_assoc() = mengambil data dari database
+        $result = mysqli_fetch_assoc($data_susu);
+        return $result;
+    }
+    public function update($data)
+    {
+        $query = "UPDATE pencatatan_data_susu SET jumlah_volume_susu = '$data[jumlah_volume_susu]', tanggal_pengambilan = '$data[tanggal_pengambilan]', tanggal_penjualan = '$data[tanggal_penjualan]', id_users = '$data[id_users]' WHERE id_susu = $data[id_susu]";
+        $data_susu = mysqli_query($this->connection(), $query);
+        return $data_susu;
+    }
+    public function delete($id)
+    {
+        $query = "DELETE FROM pencatatan_data_susu WHERE id_susu = $id";
+        $data_susu = mysqli_query($this->connection(), $query);
+        return $data_susu;
+    }
+    public function insertNew($data)
+    {
+        $query = "INSERT INTO pencatatan_data_susu (jumlah_volume_susu, tanggal_pengambilan, tanggal_penjualan, id_users) VALUES ('$data[jumlah_volume_susu]','$data[tanggal_pengambilan]','$data[tanggal_penjualan]','$data[id_users]')";
+        $data_susu = mysqli_query($this->connection(), $query);
+        return $data_susu;
+    }
+}
+
